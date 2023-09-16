@@ -10,14 +10,17 @@ import AiIcon from 'react-native-vector-icons/AntDesign';
 import McIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Text} from '../components/text';
 import Avatar from '../components/Avatar';
+import {OptionType} from './MainPage';
 
-export default function Header(): JSX.Element {
-  const [option, setOption] = useState({show: false, bargain: false});
+type HeaderProps = {
+  option: OptionType;
+  setOption: React.Dispatch<React.SetStateAction<OptionType>>;
+};
 
+export default function Header({option, setOption}: HeaderProps): JSX.Element {
   const getToggledInfo = () => {
-    setOption(prev => ({bargain: !prev.bargain, show: !prev.show}));
+    setOption({bargain: !option.bargain, show: false});
   };
-
   return (
     <>
       <StatusBar backgroundColor={'#94E048'} />

@@ -1,16 +1,20 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {Text} from '../components/text';
 import RemainedProductsCard from '../components/RemainedProductCard';
+import {Product} from '../model/product';
 
-export default function RemainedProducts(): JSX.Element {
-  const arr = [0, 0, 0, 0, 0, 0, 0, 0];
+type Props = {
+  products: Product[];
+};
+
+export default function RemainedProducts({products}: Props): JSX.Element {
   return (
     <View style={styles.container}>
       <Text style={styles.h1Text}>아직 팔리지 않은 상품이에요 👀</Text>
       <ScrollView style={styles.scrollViewStyle}>
-        {arr.map((_, index) => (
-          <RemainedProductsCard key={index} />
+        {products.map((product, index) => (
+          <RemainedProductsCard key={index} product={product} />
         ))}
       </ScrollView>
     </View>

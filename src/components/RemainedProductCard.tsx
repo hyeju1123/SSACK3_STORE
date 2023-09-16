@@ -1,34 +1,46 @@
 import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {Text} from './text';
+import {Product} from '../model/product';
+import {calcDiscountRate, formatPrice} from '../service/calculator';
 
-export default function RemainedProductsCard(): JSX.Element {
+type Props = {
+  product: Product;
+};
+
+export default function RemainedProductsCard({product}: Props): JSX.Element {
+  const {name, originalPrice, discountedPrice, imageUrl, proposerCount} =
+    product;
+
   return (
     <>
       <View style={styles.cardContainer}>
-        <Image
-          source={require('../../images/olaf.jpeg')}
-          style={styles.foodImage}
-        />
+        <Image source={{uri: imageUrl}} style={styles.foodImage} />
         <View style={styles.infoBox}>
           <View style={styles.foodInfoContainer}>
             <View style={styles.foodTitleBox}>
-              <Text style={styles.foodTitleText}>파리바케뜨 런치 샌드위치</Text>
+              <Text style={styles.foodTitleText}>{name}</Text>
             </View>
           </View>
 
           <View style={styles.spaceBetweenBox}>
             <View style={styles.discountingLine} />
-            <Text style={styles.discountedText}>￦ 5000</Text>
+            <Text style={styles.discountedText}>￦ {originalPrice}</Text>
             <View style={styles.discountedRatioBox}>
-              <Text style={styles.discountedRatioText}>40%</Text>
+              <Text style={styles.discountedRatioText}>
+                {calcDiscountRate(originalPrice, discountedPrice)}%
+              </Text>
             </View>
             <View style={styles.bargainInfoBox}>
-              <Text style={styles.barginInfoText}>흥정제안: 2명</Text>
+              <Text style={styles.barginInfoText}>
+                흥정제안: {proposerCount}명
+              </Text>
             </View>
           </View>
           <View style={styles.priceWrapper}>
-            <Text style={styles.priceText}>￦ 3,200</Text>
+            <Text style={styles.priceText}>
+              ￦ {formatPrice(discountedPrice.toString())}
+            </Text>
           </View>
         </View>
       </View>
@@ -119,7 +131,7 @@ const styles = StyleSheet.create({
   discountedRatioText: {
     color: '#FD8535',
     fontFamily: 'Inter-SemiBold',
-    fontSize: 4,
+    fontSize: 6,
   },
   bargainInfoBox: {
     top: 28,
