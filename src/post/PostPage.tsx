@@ -13,6 +13,7 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {useUser} from '../context/AuthContext';
 import {uploadMenu} from '../api/usePost';
 import Modal from '../components/Modal';
+import {getCurrentDateTime} from '../service/calculator';
 
 export default function PostPage(): JSX.Element {
   const {userId} = useUser();
@@ -24,7 +25,7 @@ export default function PostPage(): JSX.Element {
     menuName: '',
     originalPrice: '',
     discountedPrice: '',
-    endTime: '',
+    endTime: getCurrentDateTime(),
   });
   const [bargainValue, setBargainValue] = useState({
     limitTime: '',
@@ -63,7 +64,7 @@ export default function PostPage(): JSX.Element {
       menuName: '',
       originalPrice: '',
       discountedPrice: '',
-      endTime: '',
+      endTime: getCurrentDateTime(),
     });
     setBargainValue({
       limitTime: '',
@@ -239,16 +240,24 @@ export default function PostPage(): JSX.Element {
                     handleTextInput('limitTime', text, true)
                   }
                   value={bargainValue.limitTime}
-                  style={styles.textinput}
+                  style={[
+                    styles.textinput,
+                    {marginRight: -35, textAlign: 'right', paddingRight: 10},
+                  ]}
                 />
+                <Text style={[styles.semiText, {marginTop: 10}]}>분</Text>
               </View>
               <View style={styles.semiTextBox}>
                 <Text style={styles.semiText}>가격 하한선</Text>
                 <TextInput
                   onChangeText={text => handleTextInput('minPrice', text, true)}
                   value={bargainValue.minPrice}
-                  style={styles.textinput}
+                  style={[
+                    styles.textinput,
+                    {marginRight: -25, textAlign: 'right', paddingRight: 10},
+                  ]}
                 />
+                <Text style={[styles.semiText, {marginTop: 10}]}>원</Text>
               </View>
             </View>
           )}
@@ -259,7 +268,10 @@ export default function PostPage(): JSX.Element {
               <TextInput
                 onChangeText={text => handleTextInput('endTime', text, false)}
                 value={commonValue.endTime}
-                style={styles.textinput}
+                style={[
+                  styles.textinput,
+                  {textAlign: 'right', paddingRight: 10},
+                ]}
               />
             </View>
           </View>
@@ -324,7 +336,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: '#94E048',
+    borderColor: '#48d3e0',
     marginTop: 10,
     display: 'flex',
     justifyContent: 'center',
@@ -340,13 +352,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: '#94E048',
+    borderColor: '#48d3e0',
     marginVertical: 3,
     paddingHorizontal: 30,
   },
   button: {
     position: 'relative',
-    backgroundColor: '#94E048',
+    backgroundColor: '#48d3e0',
     width: width,
     display: 'flex',
     justifyContent: 'center',

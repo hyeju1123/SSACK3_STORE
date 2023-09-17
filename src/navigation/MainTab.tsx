@@ -51,7 +51,7 @@ export default function MainTab(): JSX.Element {
           tabBarLabelStyle: {fontSize: 5, marginTop: -10, marginBottom: 8},
           headerShown: false,
           tabBarIcon: props => tabBarIconHander({route, ...props}),
-          tabBarActiveTintColor: '#94E048',
+          tabBarActiveTintColor: '#48d3e0',
           tabBarInactiveTintColor: 'black',
           tabBarHideOnKeyboard: true,
         })}>

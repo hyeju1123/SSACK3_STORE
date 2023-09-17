@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#94E048',
+    borderColor: '#48d3e0',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 40,
-    backgroundColor: '#94E048',
+    backgroundColor: '#48d3e0',
     borderRadius: 10,
     paddingHorizontal: 12,
     marginRight: 8,

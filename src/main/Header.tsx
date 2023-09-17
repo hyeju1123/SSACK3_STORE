@@ -38,7 +38,7 @@ export default function Header({option, setOption}: HeaderProps): JSX.Element {
   };
   return (
     <>
-      <StatusBar backgroundColor={'#94E048'} />
+      <StatusBar backgroundColor={'#48d3e0'} />
       <View style={styles.headerContainer}>
         <View style={styles.headerMenuContainer}>
           <View style={styles.headerMenuLeft}>
@@ -80,7 +80,7 @@ export default function Header({option, setOption}: HeaderProps): JSX.Element {
           <AiIcon
             name="search1"
             size={20}
-            color={'#94E048'}
+            color={'#48d3e0'}
             style={{marginRight: 10, backgroundColor: 'white'}}
           />
           <TextInput style={styles.input} placeholder="Batch Number" />
@@ -93,7 +93,7 @@ export default function Header({option, setOption}: HeaderProps): JSX.Element {
 const styles = StyleSheet.create({
   headerContainer: {
     zIndex: 10,
-    backgroundColor: '#94E048',
+    backgroundColor: '#48d3e0',
     padding: 15,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     height: 20,
     padding: 10,
     backgroundColor: 'white',
-    borderBottomColor: '#94E048',
+    borderBottomColor: '#48d3e0',
     borderBottomWidth: 1,
   },
 });

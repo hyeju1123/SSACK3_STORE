@@ -57,7 +57,7 @@ export default function BargainCard({info, menuId, fetchProducts}: Props) {
           <View style={[styles.rowBox, {width: '30%'}]}>
             <TouchableOpacity
               onPress={handleAcceptProposal}
-              style={[styles.semiButton, {backgroundColor: '#94E048'}]}>
+              style={[styles.semiButton, {backgroundColor: '#48d3e0'}]}>
               <Text style={styles.semiText}>수락</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     color: '#696969',
   },
   allowButton: {
-    backgroundColor: '#94E048',
+    backgroundColor: '#48d3e0',
     borderRadius: 12,
     padding: 3,
     alignSelf: 'flex-start',
@@ -139,6 +139,6 @@ const styles = StyleSheet.create({
   successText: {
     fontFamily: 'Inter-Bold',
     fontSize: 8,
-    color: '#94E048',
+    color: '#48d3e0',
   },
 });

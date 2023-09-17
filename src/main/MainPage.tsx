@@ -48,9 +48,12 @@ export default function MainPage({navigation}: MainPageProps): JSX.Element {
 
   return (
     <>
-      <StatusBar backgroundColor="#94E048" />
+      <StatusBar backgroundColor="#48d3e0" />
       <Header option={option} setOption={setOption} />
-      <RemainedProducts products={products} fetchProducts={fetchProducts} />
+      <RemainedProducts
+        products={products.reverse()}
+        fetchProducts={fetchProducts}
+      />
     </>
   );
 }

@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   priceWrapper: {
     alignSelf: 'flex-start',
-    backgroundColor: '#94E048',
+    backgroundColor: '#48d3e0',
     borderRadius: 8,
     paddingHorizontal: 16,
     marginHorizontal: 4,
