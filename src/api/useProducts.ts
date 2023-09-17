@@ -17,6 +17,5 @@ export const getProducts = async ({
   }
 
   const {data} = await fetcher.post(url, {userId, isBargain});
-  console.log(data);
   return data;
 };

@@ -10,15 +10,17 @@ import {
 import {Text} from '../components/text';
 import login from '../api/useLogin';
 import {useUser} from '../context/AuthContext';
+import {useNotification} from '../context/NotificationContext';
 
 export default function LoginPage(): JSX.Element {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const {handleUser} = useUser();
+  const {handleModal} = useNotification();
 
   const handleLogin = async () => {
-    const userData = await login({username, password});
+    const userData = await login({username, password, handleModal});
     handleUser(userData);
   };
 

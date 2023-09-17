@@ -13,6 +13,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import HomeStack from './HomeStack';
 import PostPage from '../post/PostPage';
+import MyPageStack from './MyPageStack';
+import ChatStack from './ChatStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -54,14 +56,10 @@ export default function MainTab(): JSX.Element {
           tabBarHideOnKeyboard: true,
         })}>
         <Tab.Screen name="홈" component={HomeStack} />
-        <Tab.Screen name="채팅" component={Sample} />
+        <Tab.Screen name="채팅" component={ChatStack} />
         <Tab.Screen name="상품등록" component={PostPage} />
-        <Tab.Screen name="마이페이지" component={Sample} />
+        <Tab.Screen name="마이페이지" component={MyPageStack} />
       </Tab.Navigator>
     </NavigationContainer>
   );
-}
-
-function Sample(): JSX.Element {
-  return <></>;
 }

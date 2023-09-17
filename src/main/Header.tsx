@@ -11,6 +11,8 @@ import McIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Text} from '../components/text';
 import Avatar from '../components/Avatar';
 import {OptionType} from './MainPage';
+import {useUser} from '../context/AuthContext';
+import {logout} from '../api/useLogin';
 
 type HeaderProps = {
   option: OptionType;
@@ -18,8 +20,21 @@ type HeaderProps = {
 };
 
 export default function Header({option, setOption}: HeaderProps): JSX.Element {
+  const {handleUser} = useUser();
   const getToggledInfo = () => {
     setOption({bargain: !option.bargain, show: false});
+  };
+  const handleLogout = () => {
+    logout();
+    handleUser({
+      userId: '',
+      sub: '',
+      role: '',
+      exp: 0,
+      imageURL: '',
+      handleUser: () => {},
+      handleUserImg: () => {},
+    });
   };
   return (
     <>
@@ -56,7 +71,7 @@ export default function Header({option, setOption}: HeaderProps): JSX.Element {
                 style={{marginRight: 7}}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleLogout}>
               <Avatar />
             </TouchableOpacity>
           </View>

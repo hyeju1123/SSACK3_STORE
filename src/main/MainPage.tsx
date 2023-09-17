@@ -31,7 +31,6 @@ export default function MainPage({navigation}: MainPageProps): JSX.Element {
     });
     if (res) {
       setProducts(res);
-      console.log('res in main:: ', res);
     }
   }, [option.bargain, userId]);
 
@@ -51,7 +50,7 @@ export default function MainPage({navigation}: MainPageProps): JSX.Element {
     <>
       <StatusBar backgroundColor="#94E048" />
       <Header option={option} setOption={setOption} />
-      <RemainedProducts products={products} />
+      <RemainedProducts products={products} fetchProducts={fetchProducts} />
     </>
   );
 }
