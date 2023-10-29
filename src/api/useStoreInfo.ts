@@ -13,42 +13,43 @@ type UploadProps = {
     introduce: string;
     userId: string;
   };
-  profile: {
+  profileImages: {
     name: string;
     type: string;
     uri: string;
   };
-  menus: {
+  menuImages: {
     name: string;
     type: string;
     uri: string;
   };
 };
 
-export const uploadStoreInfo = async ({dto, profile, menus}: UploadProps) => {
+export const uploadStoreInfo = async ({
+  dto,
+  profileImages,
+  menuImages,
+}: UploadProps) => {
   const url = '/api/store/register';
   const fetcher = await customAxios();
   if (!fetcher) {
     return;
   }
 
-  //   const body = new FormData();
+  const body = new FormData();
 
-  //   body.append('dto', JSON.stringify(dto));
-  //   body.append('profile', profile);
-  //   body.append('menus', menus);
+  for (const [key, value] of Object.entries(dto)) {
+    body.append(key, value);
+  }
 
-  //   console.log('body in uploadMenu:: ', body);
+  body.append('profileImages', profileImages);
+  body.append('menuImages', menuImages);
 
-  const requestData = {
-    dto,
-    profile,
-    menus,
-  };
+  console.log('body in uploadMenu:: ', body);
 
-  const {data} = await fetcher.post(url, requestData, {
+  const {data} = await fetcher.post(url, body, {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;

@@ -11,7 +11,7 @@ export default function Avatar() {
         <Image source={{uri: imageURL}} style={styles.profileImage} />
       ) : (
         <Image
-          source={require('../../images/olaf.jpeg')}
+          source={require('../../images/cafe.jpg')}
           style={styles.profileImage}
         />
       )}

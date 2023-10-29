@@ -30,7 +30,7 @@ export default function MainPage({navigation}: MainPageProps): JSX.Element {
       isBargain: option.bargain ? 'T' : 'F',
     });
     if (res) {
-      setProducts(res);
+      setProducts(res.reverse());
     }
   }, [option.bargain, userId]);
 
@@ -50,10 +50,7 @@ export default function MainPage({navigation}: MainPageProps): JSX.Element {
     <>
       <StatusBar backgroundColor="#48d3e0" />
       <Header option={option} setOption={setOption} />
-      <RemainedProducts
-        products={products.reverse()}
-        fetchProducts={fetchProducts}
-      />
+      <RemainedProducts products={products} fetchProducts={fetchProducts} />
     </>
   );
 }

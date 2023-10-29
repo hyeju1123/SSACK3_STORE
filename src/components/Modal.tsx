@@ -16,13 +16,13 @@ export default function Modal({title, content}) {
 }
 
 const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     zIndex: 100,
     width: width,
-    height: height,
+    height: '100%',
     backgroundColor: 'rgba(0,0,0,0.5)',
     display: 'flex',
     justifyContent: 'center',

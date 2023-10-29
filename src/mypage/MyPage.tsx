@@ -19,7 +19,7 @@ export default function MyPage({navigation}: MyPageProps) {
       </View>
       <View style={styles.infoBox}>
         <Avatar />
-        <Text style={styles.infoText}>{sub}</Text>
+        <Text style={styles.infoText}>스노우카페</Text>
       </View>
 
       <View style={styles.buttonBox}>

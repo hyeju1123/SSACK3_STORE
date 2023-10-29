@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   Image,
@@ -15,6 +15,7 @@ import Modal from '../components/Modal';
 import {uploadStoreInfo} from '../api/useStoreInfo';
 import {MyPageStackParamList} from '../navigation/MyPageStack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 type StoreInfoPageProps = NativeStackScreenProps<
   MyPageStackParamList,
@@ -39,10 +40,58 @@ export default function StoreInfoPage({navigation}: StoreInfoPageProps) {
     introduce: '',
   });
 
+  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
+  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+
+  const handleStartTimePicker = () => {
+    setShowStartTimePicker(true);
+  };
+
+  const handleEndTimePicker = () => {
+    setShowEndTimePicker(true);
+  };
+
+  const handleTimeChange = (_: any, selectedTime: Date | undefined) => {
+    setShowStartTimePicker(false);
+    if (selectedTime) {
+      const hour = selectedTime.getHours().toString().padStart(2, '0');
+      const minute = selectedTime.getMinutes().toString().padStart(2, '0');
+      const selectedTimeStr = `${hour}:${minute}`;
+      setDto(prevDto => ({...prevDto, startTime: selectedTimeStr}));
+    }
+  };
+  const handleEndTimeChange = (_: any, selectedTime: Date | undefined) => {
+    setShowEndTimePicker(false);
+    if (selectedTime) {
+      const hour = selectedTime.getHours().toString().padStart(2, '0');
+      const minute = selectedTime.getMinutes().toString().padStart(2, '0');
+      const selectedTimeStr = `${hour}:${minute}`;
+      setDto(prevDto => ({...prevDto, endTime: selectedTimeStr}));
+    }
+  };
+
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
+
+  useEffect(() => {
+    setDto(prevDto => ({...prevDto, holiday: selectedDays.join(',')}));
+  }, [selectedDays]);
+
+  const days = ['월', '화', '수', '목', '금', '토', '일'];
+
+  const handleDayPress = day => {
+    setSelectedDays(prevSelectedDays => {
+      if (prevSelectedDays.includes(day)) {
+        return prevSelectedDays.filter(d => d !== day);
+      }
+      return [...prevSelectedDays, day];
+    });
+  };
+
   const handleTextInput = (name: string, text: string) => {
     setDto({
       ...dto,
       [name]: text,
+      holiday: selectedDays.join(','),
     });
   };
 
@@ -73,19 +122,23 @@ export default function StoreInfoPage({navigation}: StoreInfoPageProps) {
       introduce: dto.introduce,
     };
 
-    const profile = {
+    const profileImages = {
       name: avatarImage[0].fileName,
       type: avatarImage[0].type,
       uri: avatarImage[0].uri,
     };
 
-    const menus = {
+    const menuImages = {
       name: menuImage[0].fileName,
       type: menuImage[0].type,
       uri: menuImage[0].uri,
     };
 
-    const res = await uploadStoreInfo({dto: infoDto, profile, menus});
+    const res = await uploadStoreInfo({
+      dto: infoDto,
+      profileImages,
+      menuImages,
+    });
     console.log('res in handleUploadStoreInfo: ', res);
 
     setLoading(false);
@@ -133,54 +186,112 @@ export default function StoreInfoPage({navigation}: StoreInfoPageProps) {
           </View>
 
           <Text style={styles.semiTitle}>가게주소</Text>
-          <TextInput
-            onChangeText={text => handleTextInput('zipcode', text)}
-            value={dto.zipcode}
-            placeholder="우편번호"
-            style={styles.textinput}
-          />
-          <TextInput
-            onChangeText={text => handleTextInput('mainAddress', text)}
-            value={dto.mainAddress}
-            placeholder="주소"
-            style={styles.textinput}
-          />
-          <TextInput
-            onChangeText={text => handleTextInput('detailAddress', text)}
-            value={dto.detailAddress}
-            placeholder="상세주소"
-            style={styles.textinput}
-          />
+          <View style={styles.container2}>
+            <TextInput
+              onChangeText={text => handleTextInput('zipcode', text)}
+              value={dto.zipcode}
+              placeholder="우편번호"
+              style={styles.textinput}
+            />
+          </View>
+          <View style={styles.container2}>
+            <TextInput
+              onChangeText={text => handleTextInput('mainAddress', text)}
+              value={dto.mainAddress}
+              placeholder="주소"
+              style={styles.textinput}
+            />
+          </View>
+          <View style={styles.container2}>
+            <TextInput
+              onChangeText={text => handleTextInput('detailAddress', text)}
+              value={dto.detailAddress}
+              placeholder="상세주소"
+              style={styles.textinput}
+            />
+          </View>
 
           <Text style={styles.semiTitle}>전화번호</Text>
-          <TextInput
-            onChangeText={text => handleTextInput('phoneNumber', text)}
-            value={dto.phoneNumber}
-            placeholder="전화번호"
-            style={styles.textinput}
-          />
+          <View style={styles.container2}>
+            <TextInput
+              onChangeText={text => handleTextInput('phoneNumber', text)}
+              value={dto.phoneNumber}
+              placeholder="전화번호"
+              style={styles.textinput}
+            />
+          </View>
 
           <Text style={styles.semiTitle}>영업정보</Text>
-          <TextInput
-            onChangeText={text => handleTextInput('startTime', text)}
-            value={dto.startTime}
-            placeholder="영업시간"
-            style={styles.textinput}
-          />
-          <TextInput
-            onChangeText={text => handleTextInput('holiday', text)}
-            value={dto.holiday}
-            placeholder="가게 휴무일"
-            style={styles.textinput}
-          />
+
+          <Text style={styles.semiTitle2}> 영업시간을 선택하세요</Text>
+          <View style={styles.TimeRow}>
+            <TouchableOpacity
+              onPress={handleStartTimePicker}
+              style={styles.timeButton}>
+              <Text style={styles.timeButtonText}>
+                {dto.startTime ? dto.startTime : '09:00'}
+              </Text>
+            </TouchableOpacity>
+            {showStartTimePicker && (
+              <DateTimePicker
+                mode="time"
+                is24Hour
+                display="spinner"
+                onChange={handleTimeChange}
+                value={new Date()}
+              />
+            )}
+            <TouchableOpacity
+              onPress={handleEndTimePicker}
+              style={styles.timeButton}>
+              <Text style={styles.timeButtonText}>
+                {dto.endTime ? dto.endTime : '21:00'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {showEndTimePicker && (
+            <DateTimePicker
+              mode="time"
+              is24Hour
+              display="spinner"
+              onChange={handleEndTimeChange}
+              value={new Date()}
+            />
+          )}
+
+          <Text style={styles.semiTitle2}> 휴무일 선택하세요</Text>
+          <View>
+            <View style={styles.dayButtonsContainer}>
+              {days.map((day, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.dayButton,
+                    selectedDays.includes(day) && styles.selectedDayButton,
+                  ]}
+                  onPress={() => handleDayPress(day)}>
+                  <Text
+                    style={[
+                      styles.dayText,
+                      selectedDays.includes(day) && styles.selectedDayText,
+                    ]}>
+                    {day}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            {/* <Text>선택한 휴무일: {dto.holiday}</Text> */}
+          </View>
 
           <Text style={styles.semiTitle}>가게소개</Text>
-          <TextInput
-            onChangeText={text => handleTextInput('introduce', text)}
-            value={dto.introduce}
-            placeholder="가게소개"
-            style={styles.textinput}
-          />
+          <View style={styles.container2}>
+            <TextInput
+              onChangeText={text => handleTextInput('introduce', text)}
+              value={dto.introduce}
+              placeholder="가게소개"
+              style={styles.textinput}
+            />
+          </View>
 
           <Text style={styles.semiTitle}>메뉴판</Text>
           <View style={styles.rowBox}>
@@ -190,7 +301,7 @@ export default function StoreInfoPage({navigation}: StoreInfoPageProps) {
               <Text style={styles.fileText}>파일 첨부</Text>
             </TouchableOpacity>
             {!!menuImage.length && (
-              <Text style={styles.fileText}>{menuImage[0].fileName}</Text>
+              <Text style={styles.fileText2}>{menuImage[0].fileName}</Text>
             )}
           </View>
         </View>
@@ -213,13 +324,18 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
   },
+  container2: {
+    backgroundColor: 'white',
+    padding: 6,
+    marginBottom: 3,
+  },
   textinput: {
     width: '100%',
     padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#D9D9D9',
     fontFamily: 'Inter-Medium',
-    fontSize: 12,
+    fontSize: 14,
     color: 'black',
   },
   rowBox: {
@@ -236,24 +352,35 @@ const styles = StyleSheet.create({
   },
   semiTitle: {
     fontFamily: 'Inter-Bold',
-    fontSize: 14,
+    fontSize: 15,
     color: 'black',
     marginLeft: 2,
     marginTop: 30,
     marginBottom: 10,
+  },
+  semiTitle2: {
+    marginBottom: 13,
+    fontSize: 15,
+    color: 'black',
   },
   fileButton: {
     width: 80,
     height: 25,
     borderRadius: 5,
     backgroundColor: '#D9D9D9',
-    marginTop: 10,
   },
   fileText: {
     fontFamily: 'Inter-Medium',
-    fontSize: 11,
+    fontSize: 12,
     textAlign: 'center',
     marginTop: 3,
+  },
+  fileText2: {
+    fontFamily: 'Inter-Medium',
+    fontSize: 13,
+    textAlign: 'center',
+    marginTop: 3,
+    marginRight: 160,
   },
   button: {
     position: 'relative',
@@ -269,5 +396,47 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Inter-Bold',
     fontSize: 20,
+  },
+  dayButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  dayButton: {
+    flex: 1,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#CCCCCC',
+    borderRadius: 100,
+    marginRight: 5,
+  },
+  selectedDayButton: {
+    backgroundColor: '#CCCCCC',
+  },
+  dayText: {
+    fontSize: 16,
+  },
+  selectedDayText: {
+    color: '#fff',
+  },
+
+  timeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#CCCCCC',
+    borderRadius: 4,
+    width: '50%',
+    height: 50,
+    marginBottom: 8,
+  },
+  timeButtonText: {
+    fontSize: 16,
+  },
+  TimeRow: {
+    flexDirection: 'row',
+    marginBottom: 5,
   },
 });
